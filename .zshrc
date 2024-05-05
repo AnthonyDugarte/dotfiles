@@ -62,3 +62,8 @@ export OGRE_DIR="$HOME/Code/ogre/dist/sdk"
 # Golang
 [[ $commands[go] ]] && export PATH="$PATH:$(go env GOPATH)/bin"
 
+export PATH="/usr/local/smlnj/bin:$PATH"
+
+# k8s krew plugin manager
+[ -s "$HOME/.krew" ] && export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+

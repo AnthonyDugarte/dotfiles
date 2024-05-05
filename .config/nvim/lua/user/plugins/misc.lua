@@ -32,4 +32,7 @@ return {
 		},
 		cmd = { "ChatGPT", "ChatGPTActAs", "ChatGPTEditWithInstructions", "ChatGPTRun" },
 	},
+	-- {
+	-- 	'jez/vim-better-sml'
+	-- }
 }

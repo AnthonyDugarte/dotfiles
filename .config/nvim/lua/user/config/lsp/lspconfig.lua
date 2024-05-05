@@ -94,6 +94,7 @@ local servers = {
 	"groovyls",
 	"gopls",
 	"svelte",
+	"millet",
 }
 
 for _, server_spec in pairs(servers) do
