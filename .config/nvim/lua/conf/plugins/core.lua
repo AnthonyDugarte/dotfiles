@@ -31,7 +31,8 @@ return {
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			{ 'nvim-telescope/telescope-fzf-native.nvim',     build = 'make' },
-			{ "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0" }
+			{ "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0" },
+			"nvim-telescope/telescope-file-browser.nvim",
 
 		},
 		config = function()
@@ -48,12 +49,18 @@ return {
 					layout_config = {
 						prompt_position = "top",
 					},
+				},
+				extensions = {
+					file_browser = {
+						hijack_netrw = true,
+					}
 				}
 			})
 
 			-- Better live grep, it allows you to use args alongs your search, e.g.:
 			-- "search" -g *.md
-			require("telescope").load_extension("live_grep_args")
+			require("telescope").load_extension "live_grep_args"
+			require("telescope").load_extension "file_browser"
 
 			vim.keymap.set("n", "<leader>sf", "<cmd>Telescope find_files<CR>", { desc = "[S]earch [F]iles" })
 			vim.keymap.set("n", "<leader>sw", "<cmd>Telescope grep_string<CR>",
@@ -65,6 +72,8 @@ return {
 				{ desc = "[S]earch recent files" })
 			vim.keymap.set("n", "<leader><leader>", "<cmd>Telescope buffers<CR>",
 				{ desc = "[ ] Search existing buffers" })
+			vim.keymap.set("n", "<leader>se", "<cmd>Telescope file_browser<cr>",
+				{ desc = "[S]earch [E]xplorer" })
 		end
 	},
 	{
