@@ -208,6 +208,13 @@ return {
 			},
 			{ "j-hui/fidget.nvim", opts = {} },
 			"b0o/schemastore.nvim",
+			{
+				"pmizio/typescript-tools.nvim",
+				config = false,
+				dependencies = {
+					"nvim-lua/plenary.nvim"
+				}
+			},
 		},
 		config = function()
 			vim.diagnostic.config({
@@ -242,7 +249,7 @@ return {
 							async = false,
 							filter = function(client)
 								return client.name ~=
-								    "tsserver" -- and client.name ~= "lua_ls"
+								    "typescript-tools" -- and client.name ~= "lua_ls"
 							end,
 						})
 
@@ -281,36 +288,6 @@ return {
 			}
 
 			local servers = {
-				{
-					"tsserver",
-					{
-						on_attach = function(_, bufnr)
-							local function organize_imports()
-								local params = {
-									command = "_typescript.organizeImports",
-									arguments = { vim.api.nvim_buf_get_name(bufnr) },
-								}
-								vim.lsp.buf.execute_command(params)
-							end
-
-							vim.api.nvim_buf_create_user_command(
-								bufnr,
-								"OrganizeImports",
-								organize_imports,
-								{ desc = "Organize Imports" }
-							)
-
-							vim.keymap.set("n", "<leader>fi", "<cmd>OrganizeImports<cr>",
-								{ desc = "[F]ormat [I]mports", buffer = bufnr })
-						end,
-						settings = {
-							diagnostics = {
-								ignoredCodes = { 80006 },
-							},
-						},
-						root_dir = function() require('lspconfig.util').root_pattern('.git') end
-					},
-				},
 				{
 					"eslint",
 					{
@@ -362,6 +339,21 @@ return {
 
 				require('lspconfig')[server].setup(config)
 			end
+
+			require("typescript-tools").setup {
+				on_attach = function(_, bufnr)
+					vim.keymap.set("n", "<leader>fi", "<cmd>TSToolsOrganizeImports<cr>",
+						{ desc = "[F]ormat [I]mports", buffer = bufnr })
+				end,
+				handlers = handlers,
+				capabilities = capabilities,
+				settings = {
+					diagnostics = {
+						ignoredCodes = { 80006 },
+					},
+				},
+				root_dir = function() require('lspconfig.util').root_pattern('.git') end
+			}
 		end
 	},
 	{
