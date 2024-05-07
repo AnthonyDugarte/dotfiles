@@ -72,8 +72,6 @@ return {
 				{ desc = "[S]earch recent files" })
 			vim.keymap.set("n", "<leader><leader>", "<cmd>Telescope buffers<CR>",
 				{ desc = "[ ] Search existing buffers" })
-			vim.keymap.set("n", "<leader>se", "<cmd>Telescope file_browser<cr>",
-				{ desc = "[S]earch [E]xplorer" })
 		end
 	},
 	{
@@ -387,5 +385,19 @@ return {
 			require('nvim-treesitter.install').prefer_git = true
 			require('nvim-treesitter.configs').setup(opts)
 		end
+	},
+	{
+		"nvim-tree/nvim-tree.lua",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons"
+		},
+		init = function()
+			vim.g.loaded_netrw = 1
+			vim.g.loaded_netrwPlugin = 1
+			vim.opt.termguicolors = true
+		end,
+		opts = {
+
+		}
 	}
 }
