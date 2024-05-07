@@ -308,6 +308,7 @@ return {
 								ignoredCodes = { 80006 },
 							},
 						},
+						root_dir = function() require('lspconfig.util').root_pattern('.git') end
 					},
 				},
 				{
