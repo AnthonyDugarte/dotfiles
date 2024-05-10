@@ -15,5 +15,8 @@ vim.keymap.set('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float { border = 
 	{ desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', "<cmd>lua vim.diagnostic.setloclist()<CR>", { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- File explorer
 vim.keymap.set("n", "<leader>se", "<cmd>NvimTreeToggle<cr>",
 	{ desc = "[S]earch [E]xplorer" })
+vim.keymap.set("n", "<leader>sE", "<cmd>NvimTreeFindFileToggle<cr>",
+	{ desc = "[S]earch [E]xplorer with focused file" })
