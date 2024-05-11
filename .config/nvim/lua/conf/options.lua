@@ -9,7 +9,7 @@ vim.opt.mouse = "a"
 
 vim.opt.showmode = false
 vim.opt.breakindent = true
-vim.opt.signcolumn = "yes"
+vim.opt.signcolumn = "no"
 
 -- ignore case when all lower and case sensitive if a capital is present
 vim.opt.ignorecase = true

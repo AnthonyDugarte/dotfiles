@@ -398,6 +398,10 @@ return {
 		end,
 		opts = {
 
+			view = {
+				relativenumber = true,
+				signcolumn = "no",
+			},
 		}
 	}
 }
