@@ -27,7 +27,7 @@ return {
 	},
 	{
 		'nvim-telescope/telescope.nvim',
-		branch = '0.1.x',
+		-- branch = '0.1.x',
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			{ 'nvim-telescope/telescope-fzf-native.nvim',     build = 'make' },
@@ -48,6 +48,9 @@ return {
 					},
 					layout_config = {
 						prompt_position = "top",
+					},
+					path_display = {
+						"filename_first",
 					},
 				},
 				extensions = {
