@@ -236,25 +236,30 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(ev)
-					local keymap = function(lhs, rhs, desc)
-						vim.keymap.set('n', lhs, rhs, { buffer = ev.buf, desc = 'LSP: ' .. desc })
+					local keymap = function(mode, lhs, rhs, desc)
+						vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = 'LSP: ' .. desc })
 					end
 
-					keymap("gd", "<cmd>Telescope lsp_definitions<cr>", "[G]oto [D]efinition")
-					keymap("gr", "<cmd>Telescope lsp_references<cr>", "[G]oto [R]eferences")
-					keymap("gI", "<cmd>Telescope lsp_implementations<cr>", "[G]oto [I]mplementation")
+					keymap("n", "gd", "<cmd>Telescope lsp_definitions<cr>", "[G]oto [D]efinition")
+					keymap("n", "gr", "<cmd>Telescope lsp_references<cr>", "[G]oto [R]eferences")
+					keymap("n", "gI", "<cmd>Telescope lsp_implementations<cr>",
+						"[G]oto [I]mplementation")
 					-- Got to actual declaration, e.g., c header file
-					keymap("gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", "[G]oto [D]efinition")
+					keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", "[G]oto [D]efinition")
 
-					keymap("K", "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover Documentation")
+					keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover Documentation")
 
-					keymap("<leader>D", "<cmd>Telescope lsp_type_definitions<cr>",
+					keymap("n", "<leader>D", "<cmd>Telescope lsp_type_definitions<cr>",
 						"Type [D]efinition")
 
-					keymap("<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", "[R]e[n]ame")
-					keymap("<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", "[C]ode [A]ction")
+					keymap("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>",
+						"S[i]gnature help")
 
-					keymap("<leader>fm", function()
+					keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", "[R]e[n]ame")
+					keymap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>",
+						"[C]ode [A]ction")
+
+					keymap("n", "<leader>fm", function()
 						vim.lsp.buf.format({
 							async = false,
 							filter = function(client)
