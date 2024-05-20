@@ -341,6 +341,32 @@ return {
 						},
 					},
 				},
+				{
+					"typescript-tools",
+					{
+						on_attach = function(_, bufnr)
+							vim.keymap.set("n", "<leader>fi",
+								"<cmd>TSToolsOrganizeImports<cr>",
+								{ desc = "[F]ormat [I]mports", buffer = bufnr })
+						end,
+						handlers = {
+							["textDocument/publishDiagnostics"] = require(
+								"typescript-tools.api").filter_diagnostics(
+								{
+									-- 'This may be converted to an async function' diagnostics
+									80006,
+								}
+							)
+						},
+						settings = {
+							tsserver_file_preferences = {
+								includeInlayParameterNameHints = "all",
+							},
+						},
+						root_dir = function() require('lspconfig.util').root_pattern('.git') end
+					},
+					require("typescript-tools")
+				}
 			}
 
 
@@ -348,41 +374,17 @@ return {
 				local is_table_spec = type(server_spec) == "table"
 
 				local server = is_table_spec and server_spec[1] or server_spec
-
 				local server_config = is_table_spec and server_spec[2] or {}
 
-				local config = vim.tbl_extend("keep", {
+				local client = is_table_spec and server_spec[3] or require('lspconfig')[server]
+
+				local config = vim.tbl_deep_extend("force", {
 					handlers = handlers,
+					capabilities = capabilities
 				}, server_config)
 
-				config.capabilities = vim.tbl_deep_extend('force', {}, capabilities,
-					config.capabilities or {})
-
-				require('lspconfig')[server].setup(config)
+				client.setup(config)
 			end
-
-			require("typescript-tools").setup {
-				on_attach = function(_, bufnr)
-					vim.keymap.set("n", "<leader>fi", "<cmd>TSToolsOrganizeImports<cr>",
-						{ desc = "[F]ormat [I]mports", buffer = bufnr })
-				end,
-				handlers = vim.tbl_extend("keep", handlers, {
-					["textDocument/publishDiagnostics"] = require("typescript-tools.api").filter_diagnostics(
-						{
-							-- 'This may be converted to an async function' diagnostics
-							80006,
-						}
-					)
-				}),
-				settings = {
-					tsserver_file_preferences = {
-						includeInlayParameterNameHints = "all",
-					},
-				},
-
-				capabilities = capabilities,
-				root_dir = function() require('lspconfig.util').root_pattern('.git') end
-			}
 		end
 	},
 	{
