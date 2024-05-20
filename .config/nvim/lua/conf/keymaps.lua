@@ -2,6 +2,12 @@
 vim.keymap.set("n", "<leader>tn", "<cmd> set nu!<CR>", { desc = "[T]oggle line [N]umber" })
 vim.keymap.set("n", "<leader>trn", "<cmd> set rnu!<CR>", { desc = "[T]oggle relative [N]umber" })
 
+
+-- Toggling inline hints
+vim.keymap.set("n", "<leader>ti", function()
+	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "[T]oggle [I]nlay Hint" })
+
 -- Keep visual mode on identation
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")

@@ -217,12 +217,21 @@ return {
 				}
 			},
 		},
-		config = function()
+		config = function(_, opts)
 			vim.diagnostic.config({
 				virtual_text = {
 					prefix = "●", -- Could be '●', '▎', 'x'
 				},
 			})
+
+
+			-- vim.api.nvim_create_autocmd({ "LspAttach", "InsertEnter", "InsertLeave" }, {
+			-- 	group = vim.api.nvim_create_augroup("InlayHintUserLspConfig", { clear = true }),
+			-- 	callback = function(args)
+			-- 		local enabled = args.event ~= "InsertEnter"
+			-- 		vim.lsp.inlay_hint.enable(enabled, { bufnr = args.buf })
+			-- 	end,
+			-- });
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
@@ -305,7 +314,18 @@ return {
 
 					}
 				},
-				"lua_ls",
+				{
+					"lua_ls",
+					{
+						settings = {
+							Lua = {
+								hint = {
+									enable = true,
+								}
+							}
+						}
+					}
+				},
 				{
 					"jsonls",
 					{
@@ -346,13 +366,21 @@ return {
 					vim.keymap.set("n", "<leader>fi", "<cmd>TSToolsOrganizeImports<cr>",
 						{ desc = "[F]ormat [I]mports", buffer = bufnr })
 				end,
-				handlers = handlers,
-				capabilities = capabilities,
+				handlers = vim.tbl_extend("keep", handlers, {
+					["textDocument/publishDiagnostics"] = require("typescript-tools.api").filter_diagnostics(
+						{
+							-- 'This may be converted to an async function' diagnostics
+							80006,
+						}
+					)
+				}),
 				settings = {
-					diagnostics = {
-						ignoredCodes = { 80006 },
+					tsserver_file_preferences = {
+						includeInlayParameterNameHints = "all",
 					},
 				},
+
+				capabilities = capabilities,
 				root_dir = function() require('lspconfig.util').root_pattern('.git') end
 			}
 		end
