@@ -230,15 +230,6 @@ return {
 				},
 			})
 
-
-			-- vim.api.nvim_create_autocmd({ "LspAttach", "InsertEnter", "InsertLeave" }, {
-			-- 	group = vim.api.nvim_create_augroup("InlayHintUserLspConfig", { clear = true }),
-			-- 	callback = function(args)
-			-- 		local enabled = args.event ~= "InsertEnter"
-			-- 		vim.lsp.inlay_hint.enable(enabled, { bufnr = args.buf })
-			-- 	end,
-			-- });
-
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(ev)
@@ -302,12 +293,14 @@ return {
 			local handlers = {
 				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
 				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-					border =
-					    border
+					border = border
 				}),
 			}
 
 			local servers = {
+				"clangd",
+				"marksman",
+				"groovyls",
 				{
 					"eslint",
 					{
@@ -349,6 +342,15 @@ return {
 								format = { enable = true }
 							},
 						},
+						capabilities = {
+							textDocument = {
+								completion = {
+									completionItem = {
+										snippetSupport = true
+									}
+								}
+							}
+						}
 					},
 				},
 				{
@@ -376,7 +378,7 @@ return {
 						root_dir = function() require('lspconfig.util').root_pattern('.git') end
 					},
 					require("typescript-tools")
-				}
+				},
 			}
 
 
