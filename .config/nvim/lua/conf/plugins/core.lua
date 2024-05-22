@@ -1,5 +1,6 @@
 return {
 	{
+		-- TODO: Use native comment functionality
 		"numToStr/Comment.nvim",
 		dependencies = {
 			"JoosepAlviste/nvim-ts-context-commentstring",
@@ -24,6 +25,10 @@ return {
 		version = "*",
 		opts = {},
 		event = "VeryLazy",
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		opts = {}
 	},
 	{
 		'nvim-telescope/telescope.nvim',
@@ -216,6 +221,7 @@ return {
 					"nvim-lua/plenary.nvim"
 				}
 			},
+			"folke/neodev.nvim",
 		},
 		config = function(_, opts)
 			vim.diagnostic.config({
@@ -237,7 +243,8 @@ return {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(ev)
 					local keymap = function(mode, lhs, rhs, desc)
-						vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = 'LSP: ' .. desc })
+						vim.keymap.set(mode, lhs, rhs,
+							{ buffer = ev.buf, desc = 'LSP: ' .. desc })
 					end
 
 					keymap("n", "gd", "<cmd>Telescope lsp_definitions<cr>", "[G]oto [D]efinition")
@@ -246,8 +253,6 @@ return {
 						"[G]oto [I]mplementation")
 					-- Got to actual declaration, e.g., c header file
 					keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", "[G]oto [D]efinition")
-
-					keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover Documentation")
 
 					keymap("n", "<leader>D", "<cmd>Telescope lsp_type_definitions<cr>",
 						"Type [D]efinition")
@@ -432,7 +437,6 @@ return {
 		init = function()
 			vim.g.loaded_netrw = 1
 			vim.g.loaded_netrwPlugin = 1
-			vim.opt.termguicolors = true
 		end,
 		opts = {
 
