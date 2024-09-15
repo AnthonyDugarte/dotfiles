@@ -67,3 +67,8 @@ export PATH="/usr/local/smlnj/bin:$PATH"
 # k8s krew plugin manager
 [ -s "$HOME/.krew" ] && export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
+
+[ -s "$HOMEBREW_PREFIX/opt/openal-soft/lib/pkgconfig" ] && export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$HOMEBREW_PREFIX/opt/openal-soft/lib/pkgconfig"
+
+# Created by `pipx` on 2024-07-22 04:09:02
+export PATH="$PATH:$HOME/.local/bin"

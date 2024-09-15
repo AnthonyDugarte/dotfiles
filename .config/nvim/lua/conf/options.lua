@@ -22,3 +22,6 @@ vim.opt.splitright = true
 vim.opt.updatetime = 250
 vim.opt.timeout = true
 vim.opt.timeoutlen = 300
+
+-- Tabs as spaces
+vim.opt.expandtab = true
