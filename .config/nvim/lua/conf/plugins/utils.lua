@@ -9,6 +9,11 @@ return {
                                 { '<leader>c', group = '[C]ode', },
                                 { '<leader>r', group = '[R]ename', },
                                 { '<leader>f', group = '[F]ormat', },
+                                {
+                                        "<leader>?",
+                                        function() require("which-key").show({ global = false }); end,
+                                        desc = "Keymaps",
+                                },
                         }
                 },
         }
