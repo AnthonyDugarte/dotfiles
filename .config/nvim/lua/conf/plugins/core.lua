@@ -463,6 +463,18 @@ return {
                                 relativenumber = true,
                                 signcolumn = "no",
                         },
+                },
+                keys = {
+                        {
+                                "<leader>se",
+                                "<cmd>NvimTreeToggle<cr>",
+                                desc = "[S]earch [E]xplorer"
+                        },
+                        {
+                                "<leader>sE",
+                                "<cmd>NvimTreeFindFileToggle<cr>",
+                                desc = "[S]earch [E]xplorer with focused file"
+                        }
                 }
         }
 }
