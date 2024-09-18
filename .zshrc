@@ -4,15 +4,22 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="minimal"
 
+[[ $commands[brew] ]] && NVM_HOMEBREW=$(brew --prefix nvm)
+
 zstyle ':omz:update' frequency 7
 
 zstyle ':omz:plugins:nvm' lazy yes
+
 zstyle ':omz:plugins:aws' lazy yes
 zstyle ':omz:plugins:rbenv' lazy yes
 zstyle ':omz:plugins:helm' lazy yes
 zstyle ':omz:plugins:kubectl' lazy yes
 zstyle ':omz:plugins:helm' lazy yes
 zstyle ':omz:plugins:git' lazy yes
+
+
+# Force the plugin to load when using nvim
+zstyle ':omz:plugins:nvm' lazy-cmd nvim
 
 plugins=(
         git
