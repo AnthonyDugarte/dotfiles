@@ -1,193 +1,5 @@
 return {
         {
-                -- TODO: Use native comment functionality
-                "numToStr/Comment.nvim",
-                dependencies = {
-                        "JoosepAlviste/nvim-ts-context-commentstring",
-                },
-                event = "BufRead",
-                opts = function()
-                        return {
-                                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-                        }
-                end,
-        },
-        {
-                "windwp/nvim-autopairs",
-                event = "InsertEnter",
-                opts = {
-                        check_ts = true,
-                        fast_wrap = {},
-                },
-        },
-        {
-                "kylechui/nvim-surround",
-                version = "*",
-                opts = {},
-                event = "VeryLazy",
-        },
-        {
-                "windwp/nvim-ts-autotag",
-                opts = {}
-        },
-        {
-                'nvim-telescope/telescope.nvim',
-                -- branch = '0.1.x',
-                dependencies = {
-                        'nvim-lua/plenary.nvim',
-                        { 'nvim-telescope/telescope-fzf-native.nvim',     build = 'make' },
-                        { "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0" },
-                        "nvim-telescope/telescope-file-browser.nvim",
-
-                },
-                config = function()
-                        require('telescope').setup({
-                                defaults = {
-                                        prompt_prefix = "   ",
-                                        selection_caret = "  ",
-                                        entry_prefix = "  ",
-                                        mappings = {
-                                                i = {
-                                                        ["<C-h>"] = "which_key"
-                                                }
-                                        },
-                                        layout_config = {
-                                                prompt_position = "top",
-                                        },
-                                        path_display = {
-                                                "filename_first",
-                                        },
-                                },
-                                extensions = {
-                                        file_browser = {
-                                                hijack_netrw = true,
-                                        }
-                                }
-                        })
-
-                        -- Better live grep, it allows you to use args alongs your search, e.g.:
-                        -- "search" -g *.md
-                        require("telescope").load_extension "live_grep_args"
-                        require("telescope").load_extension "file_browser"
-
-                        vim.keymap.set("n", "<leader>sf", "<cmd>Telescope find_files<CR>", { desc = "[S]earch [F]iles" })
-                        vim.keymap.set("n", "<leader>sw", "<cmd>Telescope grep_string<CR>",
-                                { desc = "[S]earch current [W]ord" })
-                        vim.keymap.set("n", "<leader>sg", "<cmd>Telescope live_grep_args<CR>",
-                                { desc = "[S]earch by [G]rep" })
-                        vim.keymap.set("n", "<leader>sr", "<cmd>Telescope resume<cr>", { desc = "[S]earch [R]esume" })
-                        vim.keymap.set("n", "<leader>s.", "<cmd>Telescope oldfiles<CR>",
-                                { desc = "[S]earch recent files" })
-                        vim.keymap.set("n", "<leader><leader>", "<cmd>Telescope buffers<CR>",
-                                { desc = "[ ] Search existing buffers" })
-                end
-        },
-        {
-                "hrsh7th/nvim-cmp",
-                dependencies = {
-                        {
-                                "L3MON4D3/LuaSnip",
-                                version = "v2.*",
-                                build = "make install_jsregexp",
-                                dependencies = {
-                                        "rafamadriz/friendly-snippets",
-                                },
-                        },
-                        "saadparwaiz1/cmp_luasnip",
-                        'hrsh7th/cmp-nvim-lsp',
-                        'hrsh7th/cmp-buffer',
-                        'hrsh7th/cmp-path',
-                        'hrsh7th/cmp-cmdline',
-                        'windwp/nvim-autopairs',
-                },
-                config = function()
-                        local cmp = require 'cmp'
-                        local luasnip = require 'luasnip'
-
-                        require("luasnip.loaders.from_vscode").lazy_load()
-
-                        local autopairs_ok, cmp_autopairs = pcall(require, 'nvim-autopairs.completion.cmp')
-                        if autopairs_ok then
-                                cmp.event:on(
-                                        'confirm_done',
-                                        cmp_autopairs.on_confirm_done()
-                                )
-                        end
-
-                        cmp.setup {
-                                snippet = {
-                                        expand = function(args)
-                                                luasnip.lsp_expand(args.body)
-                                        end
-                                },
-                                mapping = cmp.mapping.preset.insert {
-                                        -- Select the [n]ext item
-                                        ['<C-n>'] = cmp.mapping.select_next_item(),
-                                        -- Select the [p]revious item
-                                        ['<C-p>'] = cmp.mapping.select_prev_item(),
-
-                                        -- Scroll the documentation window [b]ack / [f]orward
-                                        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                                        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-
-                                        ['<C-y>'] = cmp.mapping.confirm { select = true },
-
-                                        ['<C-s>'] = cmp.mapping.complete(),
-                                        ['<C-e>'] = cmp.mapping.abort(),
-
-                                        -- Think of <c-l> as moving to the right of your snippet expansion.
-                                        --  So if you have a snippet that's like:
-                                        --  function $name($args)
-                                        --    $body
-                                        --  end
-                                        --
-                                        -- <c-l> will move you to the right of each of the expansion locations.
-                                        -- <c-h> is similar, except moving you backwards.
-                                        ['<C-l>'] = cmp.mapping(function()
-                                                if luasnip.expand_or_locally_jumpable() then
-                                                        luasnip.expand_or_jump()
-                                                end
-                                        end, { 'i', 's' }),
-                                        ['<C-h>'] = cmp.mapping(function()
-                                                if luasnip.locally_jumpable(-1) then
-                                                        luasnip.jump(-1)
-                                                end
-                                        end, { 'i', 's' }),
-                                }
-                                ,
-                                sources = cmp.config.sources({
-                                        { name = 'nvim_lsp' },
-                                        { name = 'luasnip' },
-                                        { name = 'path' },
-                                }, {
-                                        { name = 'buffer' }
-                                }),
-                                window = {
-                                        completion = cmp.config.window.bordered(),
-                                        documentation = cmp.config.window.bordered(),
-                                },
-                        }
-
-                        cmp.setup.cmdline({ "/", "?" }, {
-                                mapping = cmp.mapping.preset.cmdline(),
-                                sources = {
-                                        { name = "buffer" },
-                                },
-                        })
-
-                        cmp.setup.cmdline(":", {
-                                mapping = cmp.mapping.preset.cmdline(),
-                                sources = cmp.config.sources({
-                                        { name = "path" },
-                                }, {
-                                        { name = "cmdline" },
-                                }),
-                                matching = { disallow_symbol_nonprefix_matching = false }
-                        })
-                end
-        },
-
-        {
                 "neovim/nvim-lspconfig",
                 dependencies = {
                         {
@@ -302,11 +114,33 @@ return {
                                 "marksman",
                                 "groovyls",
                                 "cmake",
+                                "angularls",
+
+                                {
+                                        "yamlls",
+                                        {
+                                                settings = {
+                                                        yaml = {
+                                                                format = {
+                                                                        enable = true
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                },
+
+
                                 {
                                         "eslint",
                                         {
                                                 settings = {
                                                         format = { enable = true },
+                                                        experimental = {
+                                                                useFlatConfig = false
+                                                        },
+                                                        workingDirectory = {
+                                                                mode = "auto"
+                                                        }
                                                 },
                                                 on_init = function(client)
                                                         client.server_capabilities.documentFormattingProvider = true
@@ -314,7 +148,7 @@ return {
                                                 on_attach = function(client, bufnr)
                                                         vim.keymap.set("n", "<leader>fe", "<cmd>EslintFixAll<cr>",
                                                                 { desc = "[F]ormat all [E]slint issues", buffer = bufnr })
-                                                end
+                                                end,
 
                                         }
                                 },
@@ -415,66 +249,5 @@ return {
                                 client.setup(config)
                         end
                 end
-        },
-        {
-                "nvim-treesitter/nvim-treesitter",
-                dependencies = {
-                        {
-                                'JoosepAlviste/nvim-ts-context-commentstring',
-                                opts = {
-                                        enable_autocmd = false,
-                                },
-                                init = function()
-                                        vim.g.skip_ts_context_commentstring_module = true
-                                end
-                        },
-
-                },
-                build = ':TSUpdate',
-                opts = {
-                        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "luadoc", 'markdown', 'html' },
-                        auto_install = true,
-                        highlight = {
-                                enable = true,
-                                additional_vim_regex_highlighting = { 'ruby' },
-                        },
-                        indent = {
-                                enable = true,
-                                disable = { 'ruby' },
-                        },
-                },
-                config = function(_, opts)
-                        require('nvim-treesitter.install').prefer_git = true
-                        require('nvim-treesitter.configs').setup(opts)
-                end
-        },
-        {
-                "nvim-tree/nvim-tree.lua",
-                dependencies = {
-                        "nvim-tree/nvim-web-devicons"
-                },
-                init = function()
-                        vim.g.loaded_netrw = 1
-                        vim.g.loaded_netrwPlugin = 1
-                end,
-                opts = {
-
-                        view = {
-                                relativenumber = true,
-                                signcolumn = "no",
-                        },
-                },
-                keys = {
-                        {
-                                "<leader>se",
-                                "<cmd>NvimTreeToggle<cr>",
-                                desc = "[S]earch [E]xplorer"
-                        },
-                        {
-                                "<leader>sE",
-                                "<cmd>NvimTreeFindFileToggle<cr>",
-                                desc = "[S]earch [E]xplorer with focused file"
-                        }
-                }
         }
 }
