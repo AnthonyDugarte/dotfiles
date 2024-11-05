@@ -60,8 +60,8 @@ return {
                                         keymap("n", "<leader>D", "<cmd>Telescope lsp_type_definitions<cr>",
                                                 "Type [D]efinition")
 
-                                        keymap("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>",
-                                                "S[i]gnature help")
+                                        -- keymap("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>",
+                                        --         "S[i]gnature help")
 
                                         keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", "[R]e[n]ame")
                                         keymap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>",

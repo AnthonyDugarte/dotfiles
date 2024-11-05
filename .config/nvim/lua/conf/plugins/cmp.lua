@@ -39,6 +39,7 @@ return {
                         'hrsh7th/cmp-buffer',
                         'hrsh7th/cmp-path',
                         'hrsh7th/cmp-cmdline',
+                        'hrsh7th/cmp-nvim-lsp-signature-help',
                         'windwp/nvim-autopairs',
                 },
                 config = function()
@@ -66,7 +67,12 @@ return {
                                 },
                                 view = {
                                         -- Explicitly request documentation.
-                                        -- docs = { auto_open = false },
+                                        docs = {
+                                                auto_open = true
+                                        },
+                                },
+                                completion = {
+                                        autocomplete = false
                                 },
                                 mapping = cmp.mapping.preset.insert {
                                         -- Scroll the documentation window [b]ack / [f]orward
@@ -90,30 +96,6 @@ return {
 
                                         ['<C-Space>'] = cmp.mapping.complete(),
                                         ['<C-e>'] = cmp.mapping.abort(),
-
-                                        -- -- Select the [n]ext item
-                                        -- ['<C-n>'] = cmp.mapping.select_next_item(),
-                                        -- -- Select the [p]revious item
-                                        -- ['<C-p>'] = cmp.mapping.select_prev_item(),
-                                        --
-                                        -- -- Think of <c-l> as moving to the right of your snippet expansion.
-                                        -- --  So if you have a snippet that's like:
-                                        -- --  function $name($args)
-                                        -- --    $body
-                                        -- --  end
-                                        -- --
-                                        -- -- <c-l> will move you to the right of each of the expansion locations.
-                                        -- -- <c-h> is similar, except moving you backwards.
-                                        -- ['<C-l>'] = cmp.mapping(function()
-                                        --         if luasnip.expand_or_locally_jumpable() then
-                                        --                 luasnip.expand_or_jump()
-                                        --         end
-                                        -- end, { 'i', 's' }),
-                                        -- ['<C-h>'] = cmp.mapping(function()
-                                        --         if luasnip.locally_jumpable(-1) then
-                                        --                 luasnip.jump(-1)
-                                        --         end
-                                        -- end, { 'i', 's' }),
 
                                         ['<Tab>'] = cmp.mapping(function(fallback)
                                                 local copilot_ok, copilot = pcall(require, 'copilot.suggestion')
@@ -149,10 +131,11 @@ return {
                                 ,
                                 sources = cmp.config.sources({
                                         { name = 'nvim_lsp' },
+                                        { name = 'buffer' },
                                         { name = 'luasnip' },
-                                        { name = 'path' },
+                                        { name = 'nvim_lsp_signature_help' },
                                 }, {
-                                        { name = 'buffer' }
+                                        { name = 'path' },
                                 }),
                         }
 
@@ -160,6 +143,9 @@ return {
                                 mapping = cmp.mapping.preset.cmdline(),
                                 sources = {
                                         { name = "buffer" },
+                                },
+                                completion = {
+                                        autocomplete = false
                                 },
                         })
 
@@ -170,6 +156,9 @@ return {
                                 }, {
                                         { name = "cmdline" },
                                 }),
+                                completion = {
+                                        autocomplete = false
+                                },
                                 matching = { disallow_symbol_nonprefix_matching = false }
                         })
                 end
