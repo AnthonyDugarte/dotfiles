@@ -66,7 +66,6 @@ return {
                                         documentation = cmp.config.window.bordered(),
                                 },
                                 view = {
-                                        -- Explicitly request documentation.
                                         docs = {
                                                 auto_open = true
                                         },
@@ -82,27 +81,24 @@ return {
                                         ['<CR>'] = cmp.mapping(function(fallback)
                                                 if cmp.visible() then
                                                         if luasnip.expandable() then
-                                                                luasnip.expand()
-                                                        else
-                                                                cmp.confirm({
+                                                                return luasnip.expand()
+                                                                -- only confirm if an option was actually picked
+                                                        elseif cmp.get_selected_entry() then
+                                                                return cmp.confirm({
                                                                         select = true,
                                                                         behavior = cmp.ConfirmBehavior.Replace
                                                                 })
                                                         end
-                                                else
-                                                        fallback()
                                                 end
+
+                                                fallback()
                                         end),
 
                                         ['<C-Space>'] = cmp.mapping.complete(),
                                         ['<C-e>'] = cmp.mapping.abort(),
 
                                         ['<Tab>'] = cmp.mapping(function(fallback)
-                                                local copilot_ok, copilot = pcall(require, 'copilot.suggestion')
-
-                                                if copilot_ok and copilot.is_visible() then
-                                                        copilot.accept()
-                                                elseif cmp.visible() then
+                                                if cmp.visible() then
                                                         cmp.select_next_item()
                                                 elseif luasnip.expand_or_locally_jumpable() then
                                                         luasnip.expand_or_jump()
@@ -139,28 +135,40 @@ return {
                                 }),
                         }
 
-                        cmp.setup.cmdline({ "/", "?" }, {
-                                mapping = cmp.mapping.preset.cmdline(),
-                                sources = {
-                                        { name = "buffer" },
-                                },
-                                completion = {
-                                        autocomplete = { cmp.TriggerEvent.TextChanged }
-                                },
-                        })
 
-                        cmp.setup.cmdline(":", {
-                                mapping = cmp.mapping.preset.cmdline(),
-                                sources = cmp.config.sources({
-                                        { name = "path" },
-                                }, {
-                                        { name = "cmdline" },
+                        local cmdlineOpts = {
+                                mapping = cmp.mapping.preset.cmdline({
+                                        ['<CR>'] = {
+                                                c = function(default)
+                                                        if cmp.visible() and cmp.get_selected_entry() then
+                                                                return cmp.confirm({ select = true })
+                                                        end
+
+                                                        default()
+                                                end,
+                                        },
                                 }),
+                                preselect = cmp.PreselectMode.None,
                                 completion = {
                                         autocomplete = { cmp.TriggerEvent.TextChanged }
                                 },
-                                matching = { disallow_symbol_nonprefix_matching = false }
-                        })
+                        }
+                        cmp.setup.cmdline({ "/", "?" },
+                                vim.tbl_deep_extend("force", cmdlineOpts, {
+                                        sources = {
+                                                { name = "buffer" },
+                                        },
+                                }))
+
+                        cmp.setup.cmdline(":",
+                                vim.tbl_deep_extend("force", cmdlineOpts, {
+                                        sources = cmp.config.sources({
+                                                { name = "path" },
+                                        }, {
+                                                { name = "cmdline" },
+                                        }),
+                                        matching = { disallow_symbol_nonprefix_matching = false }
+                                }))
                 end
         }
 }
