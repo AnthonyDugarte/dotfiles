@@ -145,7 +145,7 @@ return {
                                         { name = "buffer" },
                                 },
                                 completion = {
-                                        autocomplete = false
+                                        autocomplete = { cmp.TriggerEvent.TextChanged }
                                 },
                         })
 
@@ -157,7 +157,7 @@ return {
                                         { name = "cmdline" },
                                 }),
                                 completion = {
-                                        autocomplete = false
+                                        autocomplete = { cmp.TriggerEvent.TextChanged }
                                 },
                                 matching = { disallow_symbol_nonprefix_matching = false }
                         })
