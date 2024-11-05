@@ -1,19 +1,5 @@
 return {
         {
-                "github/copilot.vim",
-                config = function()
-                        -- avoid using the tab key to accept a suggestion
-                        -- vim.g.copilot_no_tab_map = true
-                        --
-                        -- vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
-                        --         expr = true,
-                        --         replace_keycodes = false,
-                        --         desc = 'Accept suggestion',
-                        -- })
-                end,
-                enabled = false,
-        },
-        {
                 'zbirenbaum/copilot.lua',
                 cmd = 'Copilot',
                 event = 'InsertEnter',
@@ -22,18 +8,17 @@ return {
                         "hrsh7th/nvim-cmp",
                 },
                 opts = {
-                        -- I don't find the panel useful.
                         panel = { enabled = false },
+
                         suggestion = {
                                 auto_trigger = false,
-                                -- Use alt to interact with Copilot.
                                 keymap = {
                                         accept = "<M-l>",
                                         accept_word = false,
                                         accept_line = false,
                                         next = "<M-]>",
                                         prev = "<M-[>",
-                                        dismiss = "<C-]>",
+                                        dismiss = "<M-e>",
                                 }
                         },
                         filetypes = {
@@ -47,6 +32,13 @@ return {
                                 end,
                         },
                 },
-                enabled = true,
+                config = function(_, opts)
+                        local suggestions = require("copilot.suggestion")
+
+                        vim.keymap.set('n', "<leader>tg", function() suggestions.toggle_auto_trigger() end,
+                                { desc = '[T]oggle [G]ithub Copilot' })
+
+                        require("copilot").setup(opts)
+                end
         }
 }

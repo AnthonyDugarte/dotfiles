@@ -6,6 +6,7 @@ return {
                         spec = {
                                 { '<leader>s', group = '[S]earch', },
                                 { '<leader>t', group = '[T]oggle', },
+                                { '<leader>tr', group = '[T]oggle [R]elative', },
                                 { '<leader>c', group = '[C]ode', },
                                 { '<leader>r', group = '[R]ename', },
                                 { '<leader>f', group = '[F]ormat', },

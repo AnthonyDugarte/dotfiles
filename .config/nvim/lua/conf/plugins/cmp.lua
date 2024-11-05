@@ -42,19 +42,12 @@ return {
                         'hrsh7th/cmp-nvim-lsp-signature-help',
                         'windwp/nvim-autopairs',
                 },
-                config = function()
+
+                opts = function()
                         local luasnip = require 'luasnip'
                         local cmp = require 'cmp'
 
-                        local autopairs_ok, cmp_autopairs = pcall(require, 'nvim-autopairs.completion.cmp')
-                        if autopairs_ok then
-                                cmp.event:on(
-                                        'confirm_done',
-                                        cmp_autopairs.on_confirm_done()
-                                )
-                        end
-
-                        cmp.setup {
+                        return {
                                 snippet = {
                                         expand = function(args)
                                                 luasnip.lsp_expand(args.body)
@@ -97,7 +90,7 @@ return {
                                         ['<C-Space>'] = cmp.mapping.complete(),
                                         ['<C-e>'] = cmp.mapping.abort(),
 
-                                        ['<Tab>'] = cmp.mapping(function(fallback)
+                                        ['<C-n>'] = cmp.mapping(function(fallback)
                                                 if cmp.visible() then
                                                         cmp.select_next_item()
                                                 elseif luasnip.expand_or_locally_jumpable() then
@@ -106,7 +99,7 @@ return {
                                                         fallback()
                                                 end
                                         end, { 'i', 's' }),
-                                        ['<S-Tab>'] = cmp.mapping(function(fallback)
+                                        ['<C-p>'] = cmp.mapping(function(fallback)
                                                 if cmp.visible() then
                                                         cmp.select_prev_item()
                                                 elseif luasnip.expand_or_locally_jumpable(-1) then
@@ -123,8 +116,7 @@ return {
                                                         cmp.open_docs()
                                                 end
                                         end,
-                                }
-                                ,
+                                },
                                 sources = cmp.config.sources({
                                         { name = 'nvim_lsp' },
                                         { name = 'buffer' },
@@ -134,41 +126,61 @@ return {
                                         { name = 'path' },
                                 }),
                         }
+                end,
+                config = function(_, opts)
+                        local cmp = require 'cmp'
 
+                        local autopairs_ok, cmp_autopairs = pcall(require, 'nvim-autopairs.completion.cmp')
+                        if autopairs_ok then
+                                cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+                        end
+
+                        cmp.setup(opts)
 
                         local cmdlineOpts = {
                                 mapping = cmp.mapping.preset.cmdline({
                                         ['<CR>'] = {
                                                 c = function(default)
                                                         if cmp.visible() and cmp.get_selected_entry() then
-                                                                return cmp.confirm({ select = true })
+                                                                cmp.confirm({ select = true })
+                                                        else
+                                                                default()
                                                         end
-
-                                                        default()
                                                 end,
                                         },
                                 }),
                                 preselect = cmp.PreselectMode.None,
-                                completion = {
-                                        autocomplete = { cmp.TriggerEvent.TextChanged }
-                                },
+                                completion = { autocomplete = { cmp.TriggerEvent.TextChanged } },
                         }
+
                         cmp.setup.cmdline({ "/", "?" },
                                 vim.tbl_deep_extend("force", cmdlineOpts, {
-                                        sources = {
-                                                { name = "buffer" },
-                                        },
+                                        sources = { { name = "buffer" } },
                                 }))
 
                         cmp.setup.cmdline(":",
                                 vim.tbl_deep_extend("force", cmdlineOpts, {
-                                        sources = cmp.config.sources({
-                                                { name = "path" },
-                                        }, {
-                                                { name = "cmdline" },
-                                        }),
+                                        sources = cmp.config.sources(
+                                                { { name = "path" } },
+                                                { { name = "cmdline" } }
+                                        ),
                                         matching = { disallow_symbol_nonprefix_matching = false }
                                 }))
+
+
+                        -- from https://github.com/hrsh7th/nvim-cmp/issues/261#issuecomment-1851137665
+                        vim.keymap.set('n', "<leader>tc", function()
+                                        local current_setting = cmp.get_config().completion.autocomplete
+
+                                        if current_setting and #current_setting > 0 then
+                                                cmp.setup({ completion = { autocomplete = false } })
+                                                vim.notify('[cmp] Autocomplete disabled')
+                                        else
+                                                cmp.setup({ completion = { autocomplete = { cmp.TriggerEvent.TextChanged } } })
+                                                vim.notify('[cmp] Autocomplete enabled')
+                                        end
+                                end,
+                                { desc = '[T]oggle auto-trigger [C]ompletition' })
                 end
         }
 }

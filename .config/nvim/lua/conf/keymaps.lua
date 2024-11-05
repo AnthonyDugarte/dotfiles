@@ -1,6 +1,6 @@
 -- Toggling number options
 vim.keymap.set("n", "<leader>tn", "<cmd> set nu!<CR>", { desc = "[T]oggle line [N]umber" })
-vim.keymap.set("n", "<leader>trn", "<cmd> set rnu!<CR>", { desc = "[T]oggle relative [N]umber" })
+vim.keymap.set("n", "<leader>trn", "<cmd> set rnu!<CR>", { desc = "[T]oggle [R]elative [N]umber" })
 
 
 -- Toggling inline hints
