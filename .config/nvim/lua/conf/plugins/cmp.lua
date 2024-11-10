@@ -64,7 +64,8 @@ return {
                                         },
                                 },
                                 completion = {
-                                        autocomplete = false
+                                        -- -- disable autocomplete on startup
+                                        -- autocomplete = false
                                 },
                                 mapping = cmp.mapping.preset.insert {
                                         -- Scroll the documentation window [b]ack / [f]orward
@@ -72,16 +73,11 @@ return {
                                         ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
                                         ['<CR>'] = cmp.mapping(function(fallback)
-                                                if cmp.visible() then
-                                                        if luasnip.expandable() then
-                                                                return luasnip.expand()
-                                                                -- only confirm if an option was actually picked
-                                                        elseif cmp.get_selected_entry() then
-                                                                return cmp.confirm({
-                                                                        select = true,
-                                                                        behavior = cmp.ConfirmBehavior.Replace
-                                                                })
-                                                        end
+                                                if cmp.visible() and cmp.get_selected_entry() then
+                                                        return cmp.confirm({
+                                                                select = true,
+                                                                behavior = cmp.ConfirmBehavior.Replace
+                                                        })
                                                 end
 
                                                 fallback()
