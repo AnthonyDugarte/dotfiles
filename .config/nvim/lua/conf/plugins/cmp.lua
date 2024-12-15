@@ -163,7 +163,6 @@ return {
                                         matching = { disallow_symbol_nonprefix_matching = false }
                                 }))
 
-
                         -- from https://github.com/hrsh7th/nvim-cmp/issues/261#issuecomment-1851137665
                         vim.keymap.set('n', "<leader>tc", function()
                                         local current_setting = cmp.get_config().completion.autocomplete

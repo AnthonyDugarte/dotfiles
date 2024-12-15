@@ -34,6 +34,7 @@ return {
                                 }
                         },
                         "folke/neodev.nvim",
+                        "towolf/vim-helm",
                 },
                 config = function(_, opts)
                         vim.diagnostic.config({
@@ -115,6 +116,15 @@ return {
                                 "groovyls",
                                 "cmake",
                                 "angularls",
+
+                                {
+                                        "helm_ls",
+                                        {
+                                                default_config = {
+                                                        filetypes = { "helm", "helm.yaml", "helm.tmpl" }
+                                                }
+                                        }
+                                },
 
                                 {
                                         "yamlls",

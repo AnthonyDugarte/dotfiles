@@ -9,7 +9,6 @@ return {
                         vim.g.loaded_netrwPlugin = 1
                 end,
                 opts = {
-
                         view = {
                                 relativenumber = true,
                                 signcolumn = "no",
