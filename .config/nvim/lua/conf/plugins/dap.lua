@@ -15,7 +15,6 @@ return {
                         { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
                         { "<leader>db", function() require("dap").toggle_breakpoint() end,                                    desc = "Toggle Breakpoint" },
                         { "<leader>dc", function() require("dap").continue() end,                                             desc = "Run/Continue" },
-
                         {
                                 "<leader>da",
                                 function()
@@ -32,7 +31,6 @@ return {
                                 end,
                                 desc = "Run with Args",
                         },
-
                         { "<leader>dC", function() require("dap").run_to_cursor() end,    desc = "Run to Cursor" },
                         { "<leader>dg", function() require("dap").goto_() end,            desc = "Go to Line (No Execute)" },
                         { "<leader>di", function() require("dap").step_into() end,        desc = "Step Into" },
@@ -51,9 +49,7 @@ return {
                 config = function()
                         require('dap.ext.vscode').json_decode = require 'json5'.parse
 
-
                         local dap = require("dap")
-
 
                         dap.defaults.fallback.external_terminal = {
                                 command = '/opt/homebrew/bin/kitty',
@@ -115,13 +111,10 @@ return {
                 end,
                 dependencies = {
                         "theHamsta/nvim-dap-virtual-text",
-
-
                         {
                                 "Joakker/lua-json5",
                                 build = "./install.sh",
                         },
-
                         {
                                 "mxsdev/nvim-dap-vscode-js",
                                 dependencies = {

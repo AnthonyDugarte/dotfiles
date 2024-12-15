@@ -15,7 +15,7 @@ return {
                         },
                         current_line_blame_opts = {
                                 virt_text_pos = "right_align",
-                                delay = 400,
+                                delay         = 400,
                         },
                         signcolumn = false,
                         numhl = true,

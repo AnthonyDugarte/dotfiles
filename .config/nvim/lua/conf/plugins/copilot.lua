@@ -13,12 +13,12 @@ return {
                         suggestion = {
                                 auto_trigger = false,
                                 keymap = {
-                                        accept = "<M-l>",
+                                        accept      = "<M-l>",
                                         accept_word = false,
                                         accept_line = false,
-                                        next = "<M-]>",
-                                        prev = "<M-[>",
-                                        dismiss = "<M-e>",
+                                        next        = "<M-]>",
+                                        prev        = "<M-[>",
+                                        dismiss     = "<M-e>",
                                 }
                         },
                         filetypes = {

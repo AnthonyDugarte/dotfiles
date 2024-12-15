@@ -8,8 +8,8 @@ return {
                                 opts = {
                                         ui = {
                                                 icons = {
-                                                        package_pending = " ",
-                                                        package_installed = "󰄳 ",
+                                                        package_pending     = " ",
+                                                        package_installed   = "󰄳 ",
                                                         package_uninstalled = " 󰚌",
                                                 },
                                         },
@@ -24,14 +24,12 @@ return {
                                         "williamboman/mason.nvim",
                                 },
                         },
-                        { "j-hui/fidget.nvim", opts = {} },
+                        "j-hui/fidget.nvim",
                         "b0o/schemastore.nvim",
                         {
                                 "pmizio/typescript-tools.nvim",
                                 config = false,
-                                dependencies = {
-                                        "nvim-lua/plenary.nvim"
-                                }
+                                dependencies = { "nvim-lua/plenary.nvim" }
                         },
                         "folke/neodev.nvim",
                         "towolf/vim-helm",
