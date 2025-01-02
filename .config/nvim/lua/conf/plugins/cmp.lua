@@ -2,38 +2,7 @@ return {
         {
                 "hrsh7th/nvim-cmp",
                 dependencies = {
-                        {
-                                "L3MON4D3/LuaSnip",
-                                version = "v2.*",
-                                build = "make install_jsregexp",
-                                dependencies = {
-                                        "rafamadriz/friendly-snippets",
-                                },
-                                opts = {},
-                                config = function(_, opts)
-                                        local luasnip = require 'luasnip'
-
-                                        require("luasnip.loaders.from_vscode").lazy_load()
-
-                                        -- HACK: Cancel the snippet session when leaving insert mode.
-                                        vim.api.nvim_create_autocmd('ModeChanged', {
-                                                group = vim.api.nvim_create_augroup('UnlinkSnippetOnModeChange',
-                                                        { clear = true }),
-                                                pattern = { 's:n', 'i:*' },
-                                                callback = function(event)
-                                                        if
-                                                            luasnip.session
-                                                            and luasnip.session.current_nodes[event.buf]
-                                                            and not luasnip.session.jump_active
-                                                        then
-                                                                luasnip.unlink_current()
-                                                        end
-                                                end,
-                                        })
-
-                                        luasnip.setup(opts)
-                                end
-                        },
+                        "L3MON4D3/LuaSnip",
                         "saadparwaiz1/cmp_luasnip",
                         'hrsh7th/cmp-nvim-lsp',
                         'hrsh7th/cmp-buffer',
@@ -41,6 +10,11 @@ return {
                         'hrsh7th/cmp-cmdline',
                         'hrsh7th/cmp-nvim-lsp-signature-help',
                         'windwp/nvim-autopairs',
+                        {
+                                "zbirenbaum/copilot-cmp",
+                                dependencies = { "zbirenbaum/copilot.lua" },
+                                opts = {}
+                        },
                 },
 
                 opts = function()
@@ -113,14 +87,34 @@ return {
                                                 end
                                         end,
                                 },
-                                sources = cmp.config.sources({
-                                        { name = 'nvim_lsp' },
-                                        { name = 'buffer' },
-                                        { name = 'luasnip' },
-                                        { name = 'nvim_lsp_signature_help' },
-                                }, {
-                                        { name = 'path' },
-                                }),
+                                sources = {
+                                        { name = 'copilot',                 group_index = 2 },
+                                        { name = 'nvim_lsp',                group_index = 2 },
+                                        { name = 'path',                    group_index = 2 },
+                                        { name = 'buffer',                  group_index = 2 },
+                                        { name = 'luasnip',                 group_index = 2 },
+                                        { name = 'nvim_lsp_signature_help', group_index = 2 },
+                                },
+
+                                sorting = {
+                                        priority_weight = 2,
+                                        comparators = {
+                                                require("copilot_cmp.comparators").prioritize,
+
+                                                -- Below is the default comparitor list and order for nvim-cmp
+                                                cmp.config.compare.offset,
+                                                -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+                                                cmp.config.compare.exact,
+                                                cmp.config.compare.score,
+                                                cmp.config.compare.recently_used,
+                                                cmp.config.compare.locality,
+                                                cmp.config.compare.kind,
+                                                cmp.config.compare.sort_text,
+                                                cmp.config.compare.length,
+                                                cmp.config.compare.order,
+                                        },
+                                },
+
                         }
                 end,
                 config = function(_, opts)
@@ -177,5 +171,38 @@ return {
                                 end,
                                 { desc = '[T]oggle auto-trigger [C]ompletition' })
                 end
-        }
+        },
+
+        {
+                "L3MON4D3/LuaSnip",
+                version = "v2.*",
+                build = "make install_jsregexp",
+                dependencies = {
+                        "rafamadriz/friendly-snippets",
+                },
+                opts = {},
+                config = function(_, opts)
+                        local luasnip = require 'luasnip'
+
+                        require("luasnip.loaders.from_vscode").lazy_load()
+
+                        -- HACK: Cancel the snippet session when leaving insert mode.
+                        vim.api.nvim_create_autocmd('ModeChanged', {
+                                group = vim.api.nvim_create_augroup('UnlinkSnippetOnModeChange',
+                                        { clear = true }),
+                                pattern = { 's:n', 'i:*' },
+                                callback = function(event)
+                                        if
+                                            luasnip.session
+                                            and luasnip.session.current_nodes[event.buf]
+                                            and not luasnip.session.jump_active
+                                        then
+                                                luasnip.unlink_current()
+                                        end
+                                end,
+                        })
+
+                        luasnip.setup(opts)
+                end
+        },
 }

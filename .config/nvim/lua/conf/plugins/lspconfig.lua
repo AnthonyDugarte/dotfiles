@@ -131,7 +131,13 @@ return {
                                                         yaml = {
                                                                 format = {
                                                                         enable = true
-                                                                }
+                                                                },
+                                                                schemaStore = {
+                                                                        enable = false,
+                                                                        url = "",
+                                                                },
+                                                                schemas = require('schemastore').yaml.schemas(),
+
                                                         }
                                                 }
                                         }
@@ -153,7 +159,7 @@ return {
                                                 on_init = function(client)
                                                         client.server_capabilities.documentFormattingProvider = true
                                                 end,
-                                                on_attach = function(client, bufnr)
+                                                on_attach = function(_, bufnr)
                                                         vim.keymap.set("n", "<leader>fe", "<cmd>EslintFixAll<cr>",
                                                                 { desc = "[F]ormat all [E]slint issues", buffer = bufnr })
                                                 end,
@@ -218,7 +224,12 @@ return {
                                                                 includeInlayParameterNameHints = "all",
                                                         },
                                                 },
-                                                root_dir = function() require('lspconfig.util').root_pattern('.git') end
+                                                root_dir = require('lspconfig.util').root_pattern(
+                                                        'pnpm-workspace.yaml',
+                                                        'tsconfig.json',
+                                                        'jsconfig.json',
+                                                        'package.json',
+                                                        '.git')
                                         },
                                         require("typescript-tools")
                                 },

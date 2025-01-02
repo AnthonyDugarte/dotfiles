@@ -23,4 +23,10 @@ function M.tpl_filetype(path, bufname)
         return M.is_helm_file(path) and "helm.tmpl" or "smarty"
 end
 
+function M.get_selection()
+        return vim.fn.getregion(
+                vim.fn.getpos ".", vim.fn.getpos "v", { mode = vim.fn.mode() }
+        )
+end
+
 return M

@@ -76,3 +76,11 @@ export PATH="/usr/local/smlnj/bin:$PATH"
 export PATH="$PATH:$HOME/.local/bin"
 
 # zprof
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

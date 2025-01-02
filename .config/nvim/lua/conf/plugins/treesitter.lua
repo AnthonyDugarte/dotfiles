@@ -14,7 +14,7 @@ return {
                 },
                 build = ':TSUpdate',
                 opts = {
-                        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "luadoc", 'markdown', 'html' },
+                        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", 'markdown', 'markdown_inline', 'html' },
                         auto_install = true,
                         highlight = {
                                 enable = true,
@@ -30,4 +30,9 @@ return {
                         require('nvim-treesitter.configs').setup(opts)
                 end
         },
+        {
+                "windwp/nvim-ts-autotag",
+                config = true,
+        },
+
 }

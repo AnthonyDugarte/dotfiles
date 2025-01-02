@@ -38,7 +38,8 @@ return {
                                         if vim.wo.diff then
                                                 vim.cmd.normal({ ']c', bang = true })
                                         else
-                                                gitsigns.nav_hunk('next')
+                                                gitsigns.nav_hunk(
+                                                        'next')
                                         end
                                 end, { desc = "Jump to next hunk" })
 
@@ -53,21 +54,17 @@ return {
                                 map("n", "<leader>hs", "<cmd>Gitsigns stage_hunk<CR>", { desc = "[S]tage" })
                                 map("n", "<leader>hr", "<cmd>Gitsigns reset_hunk<CR>", { desc = "[R]eset" })
 
-                                map("v", "<leader>hs", function()
-                                        gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-                                end, { desc = "[S]tage" })
-                                map("v", "<leader>hr", function()
-                                        gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-                                end, { desc = "[R]eset" })
+                                map("v", "<leader>hs",
+                                        function() gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
+                                        { desc = "[S]tage" })
+                                map("v", "<leader>hr",
+                                        function() gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
+                                        { desc = "[R]eset" })
 
-                                map("n", "<leader>hS", "<cmd>Gitsigns stage_buffer<CR>",
-                                        { desc = "[S]tage buffer" })
-                                map("n", "<leader>hu", "<cmd>Gitsigns undo_stage_hunk<CR>",
-                                        { desc = "[U]ndo stage" })
-                                map("n", "<leader>hR", "<cmd>Gitsigns reset_buffer<CR>",
-                                        { desc = "[R]eset buffer" })
-                                map("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>",
-                                        { desc = "[P]review" })
+                                map("n", "<leader>hS", "<cmd>Gitsigns stage_buffer<CR>", { desc = "[S]tage buffer" })
+                                map("n", "<leader>hu", "<cmd>Gitsigns undo_stage_hunk<CR>", { desc = "[U]ndo stage" })
+                                map("n", "<leader>hR", "<cmd>Gitsigns reset_buffer<CR>", { desc = "[R]eset buffer" })
+                                map("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "[P]review" })
 
                                 map("n", "<leader>hb", function()
                                         gitsigns.blame_line({ full = true })

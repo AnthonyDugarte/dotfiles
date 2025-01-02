@@ -1,11 +1,14 @@
 return {
         {
                 'zbirenbaum/copilot.lua',
-                cmd = 'Copilot',
                 event = 'InsertEnter',
-                dependencies = {
-                        "L3MON4D3/LuaSnip",
-                        "hrsh7th/nvim-cmp",
+                cmd = 'Copilot',
+                keys = {
+                        {
+                                "<leader>tg",
+                                function() require("copilot.suggestion").toggle_auto_trigger() end,
+                                desc = '[T]oggle [G]ithub Copilot'
+                        }
                 },
                 opts = {
                         panel = { enabled = false },
@@ -31,14 +34,6 @@ return {
                                         return true
                                 end,
                         },
-                },
-                config = function(_, opts)
-                        local suggestions = require("copilot.suggestion")
-
-                        vim.keymap.set('n', "<leader>tg", function() suggestions.toggle_auto_trigger() end,
-                                { desc = '[T]oggle [G]ithub Copilot' })
-
-                        require("copilot").setup(opts)
-                end
+                }
         }
 }
