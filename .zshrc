@@ -65,8 +65,6 @@ export OGRE_DIR="$HOME/Code/ogre/dist/sdk"
 # Golang
 [[ $commands[go] ]] && export PATH="$PATH:$(go env GOPATH)/bin"
 
-export PATH="/usr/local/smlnj/bin:$PATH"
-
 # k8s krew plugin manager
 [ -s "$HOME/.krew" ] && export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
@@ -84,3 +82,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# Added by Windsurf
+export PATH="/Users/anthonydugarte/.codeium/windsurf/bin:$PATH"

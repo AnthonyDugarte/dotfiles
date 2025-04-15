@@ -115,6 +115,8 @@ return {
                                 "cmake",
                                 "angularls",
 
+                                "kotlin_language_server",
+
                                 {
                                         "helm_ls",
                                         {
