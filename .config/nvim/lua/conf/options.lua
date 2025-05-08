@@ -20,4 +20,3 @@ vim.opt.timeoutlen     = 300
 vim.opt.expandtab      = true
 -- Theming
 vim.opt.termguicolors  = true
--- vim.o.winborder        = 'rounded'

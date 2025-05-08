@@ -32,8 +32,60 @@ return {
                 },
                 config = function(_, opts)
                         vim.diagnostic.config({
-                                virtual_text = true
+                                virtual_text = {
+                                        prefix = "●",
+                                },
+                                severity_sort = true,
+                                signs = {
+                                        text = {
+                                                [vim.diagnostic.severity.ERROR] = "",
+                                                [vim.diagnostic.severity.WARN] = "",
+                                                [vim.diagnostic.severity.HINT] = "",
+                                                [vim.diagnostic.severity.INFO] = "",
+                                        },
+                                },
+                                float = {
+                                        -- focusable = false,
+                                        style = "minimal",
+                                        border = "single",
+                                        source = true,
+                                        header = "",
+                                        prefix = "",
+                                        suffix = "",
+                                },
                         })
+
+                        -- Improve LSPs UI {{{
+                        local icons = {
+                                Class = " ",
+                                Color = " ",
+                                Constant = " ",
+                                Constructor = " ",
+                                Enum = " ",
+                                EnumMember = " ",
+                                Event = " ",
+                                Field = " ",
+                                File = " ",
+                                Folder = " ",
+                                Function = "󰊕 ",
+                                Interface = " ",
+                                Keyword = " ",
+                                Method = "ƒ ",
+                                Module = "󰏗 ",
+                                Property = " ",
+                                Snippet = " ",
+                                Struct = " ",
+                                Text = " ",
+                                Unit = " ",
+                                Value = " ",
+                                Variable = " ",
+                        }
+
+                        local completion_kinds = vim.lsp.protocol.CompletionItemKind
+                        for i, kind in ipairs(completion_kinds) do
+                                completion_kinds[i] = icons[kind] and icons[kind] .. kind or kind
+                        end
+                        -- }}}
 
                         local cmp_lsp_status_ok, _ = pcall(require, "cmp_nvim_lsp")
                         if cmp_lsp_status_ok then
@@ -50,12 +102,12 @@ return {
                                                         { buffer = ev.buf, desc = 'LSP: ' .. desc })
                                         end
 
-                                        keymap("n", "grd", "<cmd>Telescope lsp_definitions<cr>", "[G]oto [D]efinition")
-                                        keymap("n", "grr", "<cmd>Telescope lsp_references<cr>", "[G]oto [R]eferences")
-                                        keymap("n", "gri", "<cmd>Telescope lsp_implementations<cr>",
+                                        keymap("n", "gd", "<cmd>Telescope lsp_definitions<cr>", "[G]oto [D]efinition")
+                                        keymap("n", "gr", "<cmd>Telescope lsp_references<cr>", "[G]oto [R]eferences")
+                                        keymap("n", "gI", "<cmd>Telescope lsp_implementations<cr>",
                                                 "[G]oto kI]mplementation")
                                         -- Got to actual declaration, e.g., c header file
-                                        keymap("n", "grD", "<cmd>lua vim.lsp.buf.declaration()<cr>",
+                                        keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>",
                                                 "[G]oto [D]efinition")
 
                                         keymap("n", "<leader>D", "<cmd>Telescope lsp_type_definitions<cr>",
@@ -64,8 +116,8 @@ return {
                                         -- keymap("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>",
                                         --         "S[i]gnature help")
 
-                                        keymap("n", "grn", "<cmd>lua vim.lsp.buf.rename()<cr>", "[R]e[n]ame")
-                                        keymap("n", "gra", "<cmd>lua vim.lsp.buf.code_action()<cr>",
+                                        keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", "[R]e[n]ame")
+                                        keymap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>",
                                                 "[C]ode [A]ction")
 
                                         keymap("n", "<leader>fm", function()
@@ -97,6 +149,7 @@ return {
                                 "lua_ls",
                                 "jsonls",
                                 "pylsp",
+                                "gopls"
                         }
 
                         for _, server in pairs(servers) do
