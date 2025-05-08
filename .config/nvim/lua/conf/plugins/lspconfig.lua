@@ -14,7 +14,11 @@ return {
         },
         {
                 "williamboman/mason-lspconfig.nvim",
-                opts = { automatic_installation = true },
+                opts = {
+                        automatic_enable = {
+                                exclude = { 'ts_ls' }
+                        }
+                },
                 dependencies = {
                         "williamboman/mason.nvim",
                 },
@@ -54,38 +58,6 @@ return {
                                         suffix = "",
                                 },
                         })
-
-                        -- Improve LSPs UI {{{
-                        local icons = {
-                                Class = " ",
-                                Color = " ",
-                                Constant = " ",
-                                Constructor = " ",
-                                Enum = " ",
-                                EnumMember = " ",
-                                Event = " ",
-                                Field = " ",
-                                File = " ",
-                                Folder = " ",
-                                Function = "󰊕 ",
-                                Interface = " ",
-                                Keyword = " ",
-                                Method = "ƒ ",
-                                Module = "󰏗 ",
-                                Property = " ",
-                                Snippet = " ",
-                                Struct = " ",
-                                Text = " ",
-                                Unit = " ",
-                                Value = " ",
-                                Variable = " ",
-                        }
-
-                        local completion_kinds = vim.lsp.protocol.CompletionItemKind
-                        for i, kind in ipairs(completion_kinds) do
-                                completion_kinds[i] = icons[kind] and icons[kind] .. kind or kind
-                        end
-                        -- }}}
 
                         local cmp_lsp_status_ok, _ = pcall(require, "cmp_nvim_lsp")
                         if cmp_lsp_status_ok then
