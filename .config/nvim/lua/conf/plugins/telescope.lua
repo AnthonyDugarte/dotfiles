@@ -10,12 +10,12 @@ return {
                         { "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0" },
                 },
                 keys = {
-                        { "<leader>ff",       "<cmd>Telescope find_files hidden=true<CR>", desc = "[S]earch [F]iles" },
-                        { "<leader>fw",       "<cmd>Telescope grep_string<CR>",            desc = "[S]earch current [W]ord" },
+                        { "<leader>ff", "<cmd>Telescope find_files hidden=true<CR>", desc = "[S]earch [F]iles" },
+                        { "<leader>fw", "<cmd>Telescope grep_string<CR>",            desc = "[S]earch current [W]ord" },
                         { "<leader>fb", "<cmd>Telescope buffers<CR>",                desc = "[S]earch existing buffers" },
-                        { "<leader>fg",       "<cmd>Telescope live_grep_args<CR>",         desc = "[S]earch by [G]rep" },
-                        { "<leader>fr",       "<cmd>Telescope resume<cr>",                 desc = "[S]earch [R]esume" },
-                        { "<leader>f.",       "<cmd>Telescope oldfiles<CR>",               desc = "[S]earch recent files" },
+                        { "<leader>fg", "<cmd>Telescope live_grep_args<CR>",         desc = "[S]earch by [G]rep" },
+                        { "<leader>fr", "<cmd>Telescope resume<cr>",                 desc = "[S]earch [R]esume" },
+                        { "<leader>f.", "<cmd>Telescope oldfiles<CR>",               desc = "[S]earch recent files" },
                         {
                                 "<leader>fg",
                                 function()
@@ -31,14 +31,14 @@ return {
                 lazy = false,
                 opts = {
                         defaults = {
-                                mappings          = {
+                                mappings = {
                                         i = {
                                                 ["<C-h>"] = "which_key"
                                         }
                                 },
                         }
                 },
-                config = function (_, opts) 
+                config = function(_, opts)
                         require('telescope').setup(opts)
 
                         -- Better live grep, it allows you to use args alongs your search, e.g.:
