@@ -30,37 +30,40 @@ plugins=(
         helm
 )
 
-fpath=(~/.zsh/completion $fpath)
+fpath=($HOME/.zsh/completion $fpath)
 
 [ -s "$ZSH/oh-my-zsh.sh" ] && source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-alias config='/usr/bin/git --git-dir=/Users/anthonydugarte/.cfg/ --work-tree=/Users/anthonydugarte'
+alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 
 # Custom scripts
-[ -s "$HOME/bin" ] && export PATH=$HOME/bin:$PATH
+[ -s "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
 
 # Android
 export ANDROID_HOME=$HOME/Library/Android/sdk
 [ -s "$ANDROID_HOME" ] && export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
 
 # LLVM
-export LDFLAGS="-L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm/include  -I/opt/homebrew/include"
-[ -s "/opt/homebrew/opt/llvm/bin" ] && export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+BREW_LLVM_FORMULA="llvm@19"
+BREW_LLVM_FORMULA_DIR="$(brew --prefix $BREW_LLVM_FORMULA)"
+[ -s $BREW_LLVM_FORMULA_DIR ] \
+        && export LDFLAGS="-L$BREW_LLVM_FORMULA_DIR/lib -L$(brew --prefix)/lib" \
+        && export CPPFLAGS="-I$BREW_LLVM_FORMULA_DIR/include  -I$(brew --prefix)/include" \
+        && export PATH="$BREW_LLVM_FORMULA_DIR/bin:$PATH"
 
 # Python
-export PATH="/Users/anthonydugarte/Library/Python/3.9/bin:$PATH"
+[ -s "$HOME/Library/Python/3.9/bin" ] && export PATH="$HOME/Library/Python/3.9/bin:$PATH"
 
 # PSQL
-export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
+[ -s "/Applications/Postgres.app/Contents/Versions/latest/bin" ] && export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
 
 # Love
-alias love="/Applications/love.app/Contents/MacOS/love"
+[ -s "/Applications/love.app/Contents/MacOS/love" ] && alias love="/Applications/love.app/Contents/MacOS/love"
 
 # Ogre
-export OGRE_DIR="$HOME/Code/ogre/dist/sdk"
+[ -s "$HOME/Code/ogre/dist/sdk" ] && export OGRE_DIR="$HOME/Code/ogre/dist/sdk"
 
 # Golang
 [[ $commands[go] ]] && export PATH="$PATH:$(go env GOPATH)/bin"
@@ -71,7 +74,7 @@ export OGRE_DIR="$HOME/Code/ogre/dist/sdk"
 [ -s "$HOMEBREW_PREFIX/opt/openal-soft/lib/pkgconfig" ] && export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$HOMEBREW_PREFIX/opt/openal-soft/lib/pkgconfig"
 
 # Created by `pipx` on 2024-07-22 04:09:02
-export PATH="$PATH:$HOME/.local/bin"
+[ -s "$HOME/.local/bin" ] && export PATH="$PATH:$HOME/.local/bin"
 
 # zprof
 
@@ -84,4 +87,4 @@ esac
 # pnpm end
 
 # Added by Windsurf
-export PATH="/Users/anthonydugarte/.codeium/windsurf/bin:$PATH"
+[ -s "$HOME/.codeium/windsurf/bin" ] && export PATH="$HOME/.codeium/windsurf/bin:$PATH"

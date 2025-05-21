@@ -12,7 +12,7 @@ return {
                 lazy = false,
 
                 keys = {
-                        { '<Tab>', function()
+                        { '-', function()
                                 if vim.bo.filetype == 'oil' then
                                         require("oil.actions").close.callback()
                                 else

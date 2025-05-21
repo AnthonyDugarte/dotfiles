@@ -109,24 +109,25 @@ return {
                                 end
                         })
 
-                        local servers = {
-                                "clangd",
-                                "marksman",
-                                "groovyls",
-                                "cmake",
-                                "angularls",
-                                "kotlin_language_server",
-                                "helm_ls",
-                                "yamlls",
-                                "lua_ls",
-                                "jsonls",
-                                "pylsp",
-                                "gopls"
-                        }
-
-                        for _, server in pairs(servers) do
-                                vim.lsp.enable(server)
-                        end
+                        -- mason should automatically enabled these
+                        -- local servers = {
+                        --         "clangd",
+                        --         "marksman",
+                        --         "groovyls",
+                        --         "cmake",
+                        --         "angularls",
+                        --         "kotlin_language_server",
+                        --         "helm_ls",
+                        --         "yamlls",
+                        --         "lua_ls",
+                        --         "jsonls",
+                        --         "pylsp",
+                        --         "gopls"
+                        -- }
+                        --
+                        -- for _, server in pairs(servers) do
+                        --         vim.lsp.enable(server)
+                        -- end
 
                         require('lspconfig').eslint.setup({
                                 settings = {
