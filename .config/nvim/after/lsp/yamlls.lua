@@ -2,7 +2,9 @@ return {
         settings = {
                 yaml = {
                         format = {
-                                enable = true
+                                enable = true,
+                                printWidth = 4,
+                                singleQuote = true,
                         },
                         schemaStore = {
                                 enable = false,

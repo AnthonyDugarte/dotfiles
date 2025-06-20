@@ -13,7 +13,7 @@ vim.opt.smartcase      = true
 -- new splits layout
 vim.opt.splitbelow     = true
 vim.opt.splitright     = true
-vim.opt.updatetime     = 250
+vim.opt.updatetime     = 150
 vim.opt.timeout        = true
 vim.opt.timeoutlen     = 300
 -- Tabs as spaces

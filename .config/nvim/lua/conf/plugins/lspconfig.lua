@@ -108,46 +108,6 @@ return {
                                         end, "[F]or[m]at")
                                 end
                         })
-
-                        -- mason should automatically enabled these
-                        -- local servers = {
-                        --         "clangd",
-                        --         "marksman",
-                        --         "groovyls",
-                        --         "cmake",
-                        --         "angularls",
-                        --         "kotlin_language_server",
-                        --         "helm_ls",
-                        --         "yamlls",
-                        --         "lua_ls",
-                        --         "jsonls",
-                        --         "pylsp",
-                        --         "gopls"
-                        -- }
-                        --
-                        -- for _, server in pairs(servers) do
-                        --         vim.lsp.enable(server)
-                        -- end
-
-                        require('lspconfig').eslint.setup({
-                                settings = {
-                                        format = { enable = true },
-                                        experimental = {
-                                                useFlatConfig = false
-                                        },
-                                        workingDirectory = {
-                                                mode = "auto"
-                                        }
-                                },
-                                on_init = function(client)
-                                        client.server_capabilities.documentFormattingProvider = true
-                                end,
-                                on_attach = function(_, bufnr)
-                                        vim.keymap.set("n", "<leader>fe", "<cmd>EslintFixAll<cr>",
-                                                { desc = "[F]ormat all [E]slint issues", buffer = bufnr })
-                                end,
-
-                        })
                 end
         },
 
