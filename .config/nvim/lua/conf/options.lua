@@ -20,3 +20,4 @@ vim.opt.timeoutlen     = 300
 vim.opt.expandtab      = true
 -- Theming
 vim.opt.termguicolors  = true
+vim.opt.laststatus     = 3

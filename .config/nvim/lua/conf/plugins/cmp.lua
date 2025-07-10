@@ -9,7 +9,7 @@ return {
                         'hrsh7th/cmp-path',
                         'hrsh7th/cmp-cmdline',
                         'hrsh7th/cmp-nvim-lsp-signature-help',
-                        'windwp/nvim-autopairs',
+                        -- 'windwp/nvim-autopairs',
                         {
                                 "zbirenbaum/copilot-cmp",
                                 dependencies = { "zbirenbaum/copilot.lua" },
@@ -120,10 +120,10 @@ return {
                 config = function(_, opts)
                         local cmp = require 'cmp'
 
-                        local autopairs_ok, cmp_autopairs = pcall(require, 'nvim-autopairs.completion.cmp')
-                        if autopairs_ok then
-                                cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
-                        end
+                        -- local autopairs_ok, cmp_autopairs = pcall(require, 'nvim-autopairs.completion.cmp')
+                        -- if autopairs_ok then
+                        --         cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+                        -- end
 
                         cmp.setup(opts)
 

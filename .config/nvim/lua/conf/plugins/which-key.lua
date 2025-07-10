@@ -10,6 +10,7 @@ return {
                                 { '<leader>c',  group = '[C]ode' },
                                 { '<leader>r',  group = '[R]ename' },
                                 { '<leader>f',  group = '[F]ormat' },
+                                { '<leader>a',  group = '[A]vante' },
 
                                 {
                                         "<leader>?",
