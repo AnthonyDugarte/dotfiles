@@ -1,5 +1,3 @@
-local utils = require("conf.utils")
-
 return {
         {
                 'nvim-telescope/telescope.nvim',
@@ -19,9 +17,10 @@ return {
                         {
                                 "<leader>fg",
                                 function()
-                                        require('telescope').extensions.live_grep_args.live_grep_args({
-                                                default_text = table.concat(utils.get_selection())
-                                        })
+                                        require("telescope-live-grep-args.shortcuts").grep_word_under_cursor()
+                                        -- require('telescope').extensions.live_grep_args.live_grep_args({
+                                        --         default_text = table.concat(utils.get_selection())
+                                        -- })
                                 end,
                                 mode = "v",
                                 desc = "[S]earch by [G]rep"
@@ -29,15 +28,37 @@ return {
                 },
                 cmd = "Telescope",
                 lazy = false,
-                opts = {
-                        defaults = {
-                                mappings = {
-                                        i = {
-                                                ["<C-h>"] = "which_key"
-                                        }
+                opts = function(_, opts)
+                        local lga_actions = require("telescope-live-grep-args.actions")
+
+                        return vim.tbl_deep_extend("force", opts, {
+                                defaults = {
+                                        mappings = {
+                                                i = {
+                                                        ["<C-h>"] = "which_key"
+                                                }
+                                        },
                                 },
-                        }
-                },
+                                extensions = {
+                                        live_grep_args = {
+                                                auto_quoting = true,
+                                                mappings = {
+                                                        i = {
+                                                                ["<C-a>"] = lga_actions.quote_prompt(),
+                                                                ["<C-s>"] = lga_actions.quote_prompt({
+                                                                        postfix =
+                                                                        " --iglob "
+                                                                }),
+                                                                ["<C-b>"] = lga_actions.quote_prompt({
+                                                                        postfix =
+                                                                        " --iglob package.json"
+                                                                }),
+                                                        },
+                                                },
+                                        }
+                                }
+                        })
+                end,
                 config = function(_, opts)
                         require('telescope').setup(opts)
 

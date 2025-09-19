@@ -76,8 +76,6 @@ BREW_LLVM_FORMULA_DIR="$(brew --prefix $BREW_LLVM_FORMULA)"
 # Created by `pipx` on 2024-07-22 04:09:02
 [ -s "$HOME/.local/bin" ] && export PATH="$PATH:$HOME/.local/bin"
 
-# zprof
-
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
@@ -88,3 +86,6 @@ esac
 
 # Added by Windsurf
 [ -s "$HOME/.codeium/windsurf/bin" ] && export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+
+# GPG TTY
+export GPG_TTY=$(tty)
