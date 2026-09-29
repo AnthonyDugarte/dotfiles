@@ -3,6 +3,8 @@ return {
                 'zbirenbaum/copilot.lua',
                 event = 'InsertEnter',
                 cmd = 'Copilot',
+                -- commit = 'dada2f90220861d6e9d30eca6a3997cf5d0c9936',
+                enabled = false,
                 keys = {
                         {
                                 "<leader>tg",

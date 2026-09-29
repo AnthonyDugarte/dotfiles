@@ -28,10 +28,10 @@ return {
                                         end
                                 },
                                 preselect = cmp.PreselectMode.None,
-                                window = {
-                                        completion = cmp.config.window.bordered(),
-                                        documentation = cmp.config.window.bordered(),
-                                },
+                                -- window = {
+                                --         -- completion = cmp.config.window.bordered(),
+                                --         -- documentation = cmp.config.window.bordered(),
+                                -- },
                                 view = {
                                         docs = {
                                                 auto_open = true

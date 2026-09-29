@@ -7,16 +7,15 @@ ZSH_THEME="minimal"
 [[ $commands[brew] ]] && NVM_HOMEBREW=$(brew --prefix nvm)
 
 zstyle ':omz:update' frequency 7
+zstyle ':omz:update' mode reminder
 
 zstyle ':omz:plugins:nvm' lazy yes
-
 zstyle ':omz:plugins:aws' lazy yes
 zstyle ':omz:plugins:rbenv' lazy yes
 zstyle ':omz:plugins:helm' lazy yes
 zstyle ':omz:plugins:kubectl' lazy yes
 zstyle ':omz:plugins:helm' lazy yes
 zstyle ':omz:plugins:git' lazy yes
-
 
 # Force the plugin to load when using nvim
 zstyle ':omz:plugins:nvm' lazy-cmd nvim
@@ -28,6 +27,7 @@ plugins=(
         rbenv
         kubectl
         helm
+        gpg-agent
 )
 
 fpath=($HOME/.zsh/completion $fpath)
@@ -59,9 +59,6 @@ BREW_LLVM_FORMULA_DIR="$(brew --prefix $BREW_LLVM_FORMULA)"
 # PSQL
 [ -s "/Applications/Postgres.app/Contents/Versions/latest/bin" ] && export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
 
-# Love
-[ -s "/Applications/love.app/Contents/MacOS/love" ] && alias love="/Applications/love.app/Contents/MacOS/love"
-
 # Ogre
 [ -s "$HOME/Code/ogre/dist/sdk" ] && export OGRE_DIR="$HOME/Code/ogre/dist/sdk"
 
@@ -76,6 +73,12 @@ BREW_LLVM_FORMULA_DIR="$(brew --prefix $BREW_LLVM_FORMULA)"
 # Created by `pipx` on 2024-07-22 04:09:02
 [ -s "$HOME/.local/bin" ] && export PATH="$PATH:$HOME/.local/bin"
 
+# # # lazy loaded by omz
+# # nvm
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
@@ -84,8 +87,34 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# Added by Windsurf
-[ -s "$HOME/.codeium/windsurf/bin" ] && export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+# # GPG TTY
+# export GPG_TTY=$(tty)
 
-# GPG TTY
-export GPG_TTY=$(tty)
+
+# ## Auto activate virtualenv if .env folder is found in the current directory
+# function cd() {
+#   builtin cd "$@"
+#
+#   if [[ -z "$VIRTUAL_ENV" ]] ; then
+#     ## If env folder is found then activate the vitualenv
+#       if [[ -d ./.venv ]] ; then
+#         source ./.venv/bin/activate
+#       fi
+#   else
+#     ## check the current folder belong to earlier VIRTUAL_ENV folder
+#     # if yes then do nothing
+#     # else deactivate
+#       parentdir="$(dirname "$VIRTUAL_ENV")"
+#       if [[ "$PWD"/ != "$parentdir"/* ]] ; then
+#         deactivate
+#       fi
+#   fi
+# }
+
+# if [[ -z "$VIRTUAL_ENV" ]] ; then
+#    ## If env folder is found then activate the vitualenv
+#      if [[ -d ./.venv ]] ; then
+#        source ./.venv/bin/activate
+#      fi
+# fi
+
